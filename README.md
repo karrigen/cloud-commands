@@ -1,4 +1,4 @@
-Commands has been tested in PowerShell 7.0
+Commands have been tested in PowerShell 7.0
 
 **To setup the key authentication in OCI**
 
