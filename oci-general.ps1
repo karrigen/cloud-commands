@@ -1,3 +1,8 @@
+# user
+oci iam user list `
+    --query 'sort_by(data[].{name:name,status:"lifecycle-state",MFA:"is-mfa-activated","time-created":"time-created"}, &name)' `
+    --output table
+
 # region
 oci iam region-subscription list --output table
 
