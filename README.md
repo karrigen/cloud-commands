@@ -1,1 +1,2 @@
-
+## To setup the key authentication in OCI
+https://docs.oracle.com/en-us/iaas/Content/API/Concepts/apisigningkey.htm#five
