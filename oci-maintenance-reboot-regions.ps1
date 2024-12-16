@@ -1,8 +1,3 @@
-# Showing maintenance reboot time for all VMs in all compartments in all regions
-# The script runs in Powershell with oci tool installed and Oracle Cloud API configured 
-# https://docs.oracle.com/en-us/iaas/Content/API/Concepts/apisigningkey.htm#apisigningkey_topic_How_to_Generate_an_API_Signing_Key_Console
-# Author: Zhou Dai
-
 $startTime = Get-Date
 
 # save region names to list
