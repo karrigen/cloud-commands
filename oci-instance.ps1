@@ -5,7 +5,7 @@ oci search resource structured-search `
     --region 'syd' 
 
 # first instance
-oci compute instance list --region "syd" --compartment-id "$compartment_id" --query 'data[0]' 
+oci compute instance list --region "sin" --compartment-id "$compartment_id" --query 'data[0]' 
 
 # restart instance by instance ID
 oci compute instance action --instance-id <instance_OCID> --action reset
@@ -39,7 +39,7 @@ oci search resource structured-search `
     
 # all in all compartments in a region
 oci search resource structured-search `
-    --region 'jed' `
+    --region 'sin' `
     --query-text "QUERY instance resources return region where lifeCycleState = 'running'" `
     --query 'sort_by(data.items[].{name:"display-name",state:"lifecycle-state", region:"additional-details"."region", Environment:"defined-tags"."Hosting"."Environment",OS:"freeform-tags"."os",role:"freeform-tags"."role",ansible:"freeform-tags"."ansible_managed",terraform:"freeform-tags"."terraform_managed"},&name)'  `
     --output table
@@ -47,7 +47,7 @@ oci search resource structured-search `
 # all in one compartment in a region
 oci compute instance list `
     --compartment-id $compartment_id `
-    --region 'lhr' `
+    --region 'sin' `
     --query 'sort_by(data[*].{name:"display-name",state:"lifecycle-state",region:"additional-details"."region",Environment:"defined-tags"."Hosting"."Environment",OS:"freeform-tags"."os",role:"freeform-tags"."role",ansible:"freeform-tags"."ansible_managed",terraform:"freeform-tags"."terraform_managed"},&name)' `
     --output table    
     
