@@ -48,3 +48,18 @@ oci dns resolver list `
 oci dns view list `
     --compartment-id $compartment_id `
     --region 'syd'
+	
+	
+## peering 
+oci network remote-peering-connection list `
+	--compartment-id $compartment_id `
+	--region 'syd' `
+	--query 'data[*].{name:"display-name", status:"peering-status", peer:"peer-region-name"}' `
+	--output table
+
+## VPN connections
+oci network ip-sec-connection list `
+	--compartment-id $compartment_id `
+	--region 'syd' `
+	--query 'data[*].{name:"display-name",state:"lifecycle-state"}' `
+	--output table
