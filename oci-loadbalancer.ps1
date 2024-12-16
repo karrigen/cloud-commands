@@ -121,24 +121,23 @@ oci lb backend-set update `
     --health-checker-retries 3 `
     --health-checker-timeout-in-ms 300
     
-
-
-
+## RULE SET
 # Load balancer rule set
 oci lb rule-set list `
     --region 'lhr' `
     --load-balancer-id ocid1.loadbalancer.oc1.uk-london-1.aaaaaaaahvqzlha5gtauptgevqqnitdr6ufjq2xjmxl2hpl367kmvpxrkuva `
     --query 'data[].name'
+    
 oci lb rule-set list `
     --region 'lhr' `
     --load-balancer-id ocid1.loadbalancer.oc1.uk-london-1.aaaaaaaahvqzlha5gtauptgevqqnitdr6ufjq2xjmxl2hpl367kmvpxrkuva `
     --query 'data[].items[*]'
+
 oci lb rule-set list `
     --region 'lhr' `
     --load-balancer-id ocid1.loadbalancer.oc1.uk-london-1.aaaaaaaahvqzlha5gtauptgevqqnitdr6ufjq2xjmxl2hpl367kmvpxrkuva `
     --query 'data[].items[*].{action:action,attri_name:conditions[]."attribute-name"[] | [0],attri_value:conditions[]."attribute-value"[] | [0]}'
+
 oci lb rule-set create  --generate-full-command-json-input  > example.json
-oci lb rule-set create `
-    --name 'allowed_ips' `
-    --load-balancer-id ocid1.loadbalancer.oc1.ap-sydney-1.aaaaaaaauqaqwczxstuohwjhbgmxt6sx2o7cet2qj54qnai7vi5u3bee2jba `
-    --items file://example.json
+
+
