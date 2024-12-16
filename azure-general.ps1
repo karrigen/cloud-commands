@@ -25,16 +25,18 @@ foreach ($i in (get-content subscriptionid.txt)) {
     az storage account list --subscription "$i" --query "[?minimumTlsVersion != 'TLS1_2'].{name:name,minimumTlsVersion:minimumTlsVersion,kind:kind}" -o table
 }
 
-# application gateway diagnostic setting
+# diagnostic settings for one agw
+az monitor diagnostic-settings list `
+	--resource <agwName> `
+	--resource-group <resourceGroupName> `
+	--resource-type Microsoft.Network/applicationGateways
+
+# diagnostic setting for all agw in one resource group
 $gateway = az network application-gateway list `
-	--resource-group zz1-com-resgrp-dmz `
+	--resource-group <resourceGroupName> `
 	--query '[].{name:name}' -o tsv
 foreach ($i in $gateway)
 {
-	az monitor diagnostic-settings list --resource $i --resource-group zz1-com-resgrp-dmz --resource-type Microsoft.Network/applicationGateways --query '[].{name:name}' -o tsv
+	az monitor diagnostic-settings list --resource $i --resource-group <resourceGroupName> --resource-type Microsoft.Network/applicationGateways --query '[].{name:name}' -o tsv
 }
 
-az monitor diagnostic-settings list `
-	--resource ZZ1PNBAL01_TAP `
-	--resource-group zz1-com-resgrp-dmz `
-	--resource-type Microsoft.Network/applicationGateways
