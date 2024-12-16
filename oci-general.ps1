@@ -5,6 +5,7 @@ oci iam user list `
 
 # region
 oci iam region-subscription list --output table
+oci iam region-subscription list --query 'data[]."region-key"' | jq  -r '.[]'
 
 # compartment
 oci iam compartment list --all --output table --query "data[*].{CompartmentName: name, CompartmentID: id}"
