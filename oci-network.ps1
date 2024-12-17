@@ -69,12 +69,12 @@ oci network ip-sec-connection list `
 # one instance
 $instance_id = ""
 $vnic_id = oci compute vnic-attachment list `
-	--compartment-id $compartment_id `
-	--region 'syd' `
+    --compartment-id $compartment_id `
+    --region 'syd' `
     --instance-id $instance_id`
     --query 'data[]."vnic-id"' | jq  -r '.[]'
 oci network private-ip list `
-	--region 'syd' `
+    --region 'syd' `
     --vnic-id  "$vnic_id" `
     --query 'sort_by(data[].{ip:"ip-address", "is-primary":"is-primary"}, &ip)' `
     --output table
