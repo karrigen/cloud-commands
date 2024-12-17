@@ -63,3 +63,21 @@ oci network ip-sec-connection list `
 	--region 'syd' `
 	--query 'data[*].{name:"display-name",state:"lifecycle-state"}' `
 	--output table
+    
+    
+## IP
+# one instance
+$instance_id = ""
+$vnic_id = oci compute vnic-attachment list `
+	--compartment-id $compartment_id `
+	--region 'syd' `
+    --instance-id $instance_id`
+    --query 'data[]."vnic-id"' | jq  -r '.[]'
+oci network private-ip list `
+	--region 'syd' `
+    --vnic-id  "$vnic_id" `
+    --query 'sort_by(data[].{ip:"ip-address", "is-primary":"is-primary"}, &ip)' `
+    --output table
+
+
+    
