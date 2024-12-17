@@ -39,16 +39,16 @@ oci search resource structured-search `
     
 # all in all compartments in a region
 oci search resource structured-search `
-	--region 'sin' `
-	--query-text "QUERY instance resources return region where lifeCycleState = 'running'" `
-	--query 'data.items[].{name:"display-name",state:"lifecycle-state", region:"additional-details"."region", Environment:"defined-tags"."Hosting"."Environment",OS:"freeform-tags"."os",role:"freeform-tags"."role",ansible:"freeform-tags"."ansible_managed",terraform:"freeform-tags"."terraform_managed"}'  `
-	| convertFrom-json | sort-object -property name | format-table
+    --region 'sin' `
+    --query-text "QUERY instance resources return region where lifeCycleState = 'running'" `
+    --query 'data.items[].{name:"display-name",state:"lifecycle-state", region:"additional-details"."region", Environment:"defined-tags"."Hosting"."Environment",OS:"freeform-tags"."os",role:"freeform-tags"."role",ansible:"freeform-tags"."ansible_managed",terraform:"freeform-tags"."terraform_managed"}'  `
+    | convertFrom-json | sort-object -property name | format-table
     
 # all in one compartment in a region
 oci compute instance list `
-	--compartment-id $compartment_id `
-	--region 'sin' `
-	--query 'data[*].{name:"display-name",state:"lifecycle-state",region:"additional-details"."region",Environment:"defined-tags"."Hosting"."Environment",OS:"freeform-tags"."os",role:"freeform-tags"."role",ansible:"freeform-tags"."ansible_managed",terraform:"freeform-tags"."terraform_managed"}' `
+    --compartment-id $compartment_id `
+    --region 'sin' `
+    --query 'data[*].{name:"display-name",state:"lifecycle-state",region:"additional-details"."region",Environment:"defined-tags"."Hosting"."Environment",OS:"freeform-tags"."os",role:"freeform-tags"."role",ansible:"freeform-tags"."ansible_managed",terraform:"freeform-tags"."terraform_managed"}' `
     | convertFrom-json | sort-object -property name | format-table    
     
 # search for a cutomized role in a region
@@ -64,10 +64,10 @@ oci compute instance list --compartment-id $compartment_id --region='syd' --quer
 
 # query by name
 oci search resource structured-search `
-	--query-text "QUERY instance resources return region where displayName =~ 'YD1CWFTP01'" `
-	--region 'syd' `
-	--query 'data.items[].{name:"display-name",state:"lifecycle-state", region:"additional-details"."region", Environment:"defined-tags"."Hosting"."Environment",OS:"freeform-tags"."os",role:"freeform-tags"."role",ansible:"freeform-tags"."ansible_managed",terraform:"freeform-tags"."terraform_managed"}' `
-	| convertFrom-json | format-table
+    --query-text "QUERY instance resources return region where displayName =~ 'YD1CWFTP01'" `
+    --region 'syd' `
+    --query 'data.items[].{name:"display-name",state:"lifecycle-state", region:"additional-details"."region", Environment:"defined-tags"."Hosting"."Environment",OS:"freeform-tags"."os",role:"freeform-tags"."role",ansible:"freeform-tags"."ansible_managed",terraform:"freeform-tags"."terraform_managed"}' `
+    | convertFrom-json | format-table
 
     
 
