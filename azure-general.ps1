@@ -14,11 +14,11 @@ az account subscription list --query "[].subscriptionId" | ConvertFrom-Json
 # storage account - check TSL version and KIND
 $SubscriptionID = <SubscriptionID>
 az storage account list `
-	--subscription $SubscriptionID  `
-	--query "[?minimumTlsVersion != 'TLS1_2'].{name:name,minimumTlsVersion:minimumTlsVersion,kind:kind}" -o table
+    --subscription $SubscriptionID  `
+    --query "[?minimumTlsVersion != 'TLS1_2'].{name:name,minimumTlsVersion:minimumTlsVersion,kind:kind}" -o table
 az storage account list `
-	--subscription $SubscriptionID `
-	--query "[].{name:name,minimumTlsVersion:minimumTlsVersion,kind:kind}" -o table
+    --subscription $SubscriptionID `
+    --query "[].{name:name,minimumTlsVersion:minimumTlsVersion,kind:kind}" -o table
 	
 foreach ($i in (get-content subscriptionid.txt)) {
     echo "$i"
@@ -27,16 +27,16 @@ foreach ($i in (get-content subscriptionid.txt)) {
 
 # diagnostic settings for one agw
 az monitor diagnostic-settings list `
-	--resource <agwName> `
-	--resource-group <resourceGroupName> `
-	--resource-type Microsoft.Network/applicationGateways
+    --resource <agwName> `
+    --resource-group <resourceGroupName> `
+    --resource-type Microsoft.Network/applicationGateways
 
 # diagnostic setting for all agw in one resource group
 $gateway = az network application-gateway list `
-	--resource-group <resourceGroupName> `
-	--query '[].{name:name}' -o tsv
+    --resource-group <resourceGroupName> `
+    --query '[].{name:name}' -o tsv
 foreach ($i in $gateway)
 {
-	az monitor diagnostic-settings list --resource $i --resource-group <resourceGroupName> --resource-type Microsoft.Network/applicationGateways --query '[].{name:name}' -o tsv
+    az monitor diagnostic-settings list --resource $i --resource-group <resourceGroupName> --resource-type Microsoft.Network/applicationGateways --query '[].{name:name}' -o tsv
 }
 
