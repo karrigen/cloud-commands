@@ -85,7 +85,7 @@ oci network private-ip list `
 
 
 # all instances in one compartment
-$region = 'syd'
+$region = 'sin'
 $instance_ids = oci compute instance list `
     --compartment-id $compartment_id `
     --region "$region" `
@@ -100,6 +100,5 @@ foreach ($i in $instance_ids){
         --region "$region" `
         --vnic-id  "$vnic_id" `
         --query 'data[].{ip:"ip-address", "is-primary":"is-primary",hostname:"hostname-label"}'
-    $result | convertFrom-json | sort-object -property { [System.Version]($_.ip) }
-    write-hot ''
+    $result | convertFrom-json | sort-object -property { [System.Version]($_.ip) } | format-table
 }
