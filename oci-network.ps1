@@ -67,17 +67,40 @@ oci network ip-sec-connection list `
     
 ## IP
 # one instance
-$instance_id = ""
+$compartment_id = ''
+$region = 'syd'
+$instance_id = oci search resource structured-search `
+    --query-text "QUERY instance resources return region where displayName =~ 'YD1PWITG-ABES'" `
+    --region "$region" `
+    --query 'data.items[].identifier' | jq  -r '.[]'
 $vnic_id = oci compute vnic-attachment list `
     --compartment-id $compartment_id `
-    --region 'syd' `
-    --instance-id $instance_id`
+    --region "$region" `
+    --instance-id "$instance_id" `
     --query 'data[]."vnic-id"' | jq  -r '.[]'
 oci network private-ip list `
-    --region 'syd' `
+    --region "$region" `
     --vnic-id  "$vnic_id" `
-    --query 'sort_by(data[].{ip:"ip-address", "is-primary":"is-primary"}, &ip)' `
-    --output table
+    --query 'data[].{ip:"ip-address", "is-primary":"is-primary",hostname:"hostname-label"}' `
+    | convertFrom-json | sort-object -property { [System.Version]($_.ip) }
 
 
-    
+# all instances in one compartment
+$compartment_id = ''
+$region = 'syd'
+$instance_ids = oci compute instance list `
+    --compartment-id $compartment_id `
+    --region "$region" `
+    --query 'data[].id' | jq  -r '.[]'
+foreach ($i in $instance_ids){
+    $vnic_id = oci compute vnic-attachment list `
+        --compartment-id $compartment_id `
+        --region "$region" `
+        --instance-id "$i" `
+        --query 'data[]."vnic-id"' | jq  -r '.[]'
+    oci network private-ip list `
+        --region "$region" `
+        --vnic-id  "$vnic_id" `
+        --query 'data[].{ip:"ip-address", "is-primary":"is-primary",hostname:"hostname-label"}' `
+        | convertFrom-json | sort-object -property { [System.Version]($_.ip) }
+}
