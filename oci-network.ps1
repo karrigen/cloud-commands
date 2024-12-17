@@ -96,9 +96,9 @@ foreach ($i in $instance_ids){
         --region "$region" `
         --instance-id "$i" `
         --query 'data[]."vnic-id"' | jq  -r '.[]'
-    $result = oci network private-ip list `
+    oci network private-ip list `
         --region "$region" `
         --vnic-id  "$vnic_id" `
-        --query 'data[].{ip:"ip-address", "is-primary":"is-primary",hostname:"hostname-label"}'
-    $result | convertFrom-json | sort-object -property { [System.Version]($_.ip) } | format-table
+        --query 'data[].{ip:"ip-address", "is-primary":"is-primary",hostname:"hostname-label"}' `
+		| convertFrom-json | sort-object -property { [System.Version]($_.ip) } | format-table
 }
