@@ -6,8 +6,8 @@ oci lb load-balancer list --all --compartment-id $compartment_id --region 'syd' 
 oci lb load-balancer list --all `
     --compartment-id $compartment_id `
     --region 'syd' `
-    --query 'sort_by(data[*].{name:"display-name", IP:"ip-addresses"[*]."ip-address" | [0], id:"id"}, &name)' `
-    --output table
+    --query 'data[*].{name:"display-name", IP:"ip-addresses"[*]."ip-address" | [0], id:"id"}' `
+    | convertFrom-json | sort-object -property name | format-table
 
 # check hostname on all lb
 oci lb load-balancer list --all `
@@ -20,8 +20,8 @@ foreach ($i in get-content regions.txt) {
     oci search resource structured-search `
     --region "$i" `
     --query-text "QUERY LoadBalancer resources" `
-    --query 'sort_by(data.items[*].{name:"display-name",compartmentID:"compartment-id",state:"lifecycle-state"},&name)' `
-    --output table
+    --query 'data.items[*].{name:"display-name",compartmentID:"compartment-id",state:"lifecycle-state"}' `
+    | convertFrom-json | sort-object -property name | format-table
 }    
 
 # number of lb
@@ -36,8 +36,8 @@ oci lb backend-set list --all --region "syd" --load-balancer-id "$lb_id" --query
 oci lb backend-set list --all `
     --region "syd" `
     --load-balancer-id "$lb_id" `
-    --query 'sort_by(data[*].{name:"name", backend:"backends"[*]."name" | [0], cert:"ssl-configuration"."certificate-name"}, &name)' `
-    --output table
+    --query 'data[*].{name:"name", backend:"backends"[*]."name" | [0], cert:"ssl-configuration"."certificate-name"}' `
+    | convertFrom-json | sort-object -property name | format-table
 
 # all lb in one region
 $lb_ids = oci lb load-balancer list --all `
@@ -48,8 +48,8 @@ foreach ($i in $lb_ids) {
     oci lb backend-set list --all `
     --region 'syd' `
     --load-balancer-id "$i" `
-    --query 'sort_by(data[*].{name:"name", backend:"backends"[*]."name" | [0], cert:"ssl-configuration"."certificate-name"}, &name)'`
-    --output table
+    --query 'data[*].{name:"name", backend:"backends"[*]."name" | [0], cert:"ssl-configuration"."certificate-name"}'`
+    | convertFrom-json | sort-object -property name | format-table
 }
 
 
@@ -59,7 +59,7 @@ oci nlb network-load-balancer list --all `
     --compartment-id  "$compartment_id" `
     --region 'syd' `
     --query 'data.items[*].{name:"display-name", PublicIP:"ip-addresses"[*]."ip-address" | [0], PrivateIP:"ip-addresses"[*]."ip-address" | [1], id:"id"}' `
-    --output table
+    | convertFrom-json | sort-object -property name | format-table
     
 foreach ($i in get-content regions.txt) {
     $i
@@ -68,7 +68,7 @@ foreach ($i in get-content regions.txt) {
             --compartment-id  $j `
             --region $i `
             --query 'data.items[*].{name:"display-name",compartment:"compartment-id"}' `
-            --output table
+            | convertFrom-json | sort-object -property name | format-table
     }
 }
 
@@ -78,8 +78,8 @@ oci certs-mgmt certificate list --all `
     --compartment-id "$compartment_id" `
     --region 'syd' `
     --lifecycle-state ACTIVE `
-    --query 'sort_by(data.items[*].{name:"name","signature-algorithm":"signature-algorithm","key-algorithm":"key-algorithm",notAfter:"current-version-summary"."validity"."time-of-validity-not-after", notBefore:"current-version-summary"."validity"."time-of-validity-not-before"},&name)' `
-    --output table
+    --query 'data.items[*].{name:"name","signature-algorithm":"signature-algorithm","key-algorithm":"key-algorithm",notAfter:"current-version-summary"."validity"."time-of-validity-not-after", notBefore:"current-version-summary"."validity"."time-of-validity-not-before"}' `
+	| convertFrom-json | sort-object -property name | format-table
     
 
 # load balancer managed cert
