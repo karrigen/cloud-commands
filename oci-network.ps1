@@ -67,7 +67,6 @@ oci network ip-sec-connection list `
     
 ## IP
 # one instance
-$compartment_id = ''
 $region = 'syd'
 $instance_id = oci search resource structured-search `
     --query-text "QUERY instance resources return region where displayName =~ 'YD1PWITG-ABES'" `
@@ -86,7 +85,6 @@ oci network private-ip list `
 
 
 # all instances in one compartment
-$compartment_id = ''
 $region = 'syd'
 $instance_ids = oci compute instance list `
     --compartment-id $compartment_id `
@@ -98,9 +96,10 @@ foreach ($i in $instance_ids){
         --region "$region" `
         --instance-id "$i" `
         --query 'data[]."vnic-id"' | jq  -r '.[]'
-    oci network private-ip list `
+    $result = oci network private-ip list `
         --region "$region" `
         --vnic-id  "$vnic_id" `
-        --query 'data[].{ip:"ip-address", "is-primary":"is-primary",hostname:"hostname-label"}' `
-        | convertFrom-json | sort-object -property { [System.Version]($_.ip) }
+        --query 'data[].{ip:"ip-address", "is-primary":"is-primary",hostname:"hostname-label"}'
+    $result | convertFrom-json | sort-object -property { [System.Version]($_.ip) }
+    write-hot ''
 }
