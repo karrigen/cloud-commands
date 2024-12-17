@@ -1,32 +1,32 @@
 ## NETWORK
 #  VCN
 oci network vcn list `
-	--compartment-id $compartment_id `
-	--region 'syd' `
-	--query 'data[].{CIDR:"cidr-block",networkName:"display-name",id:"id",state:"lifecycle-state"}' `
-	| convertFrom-json | format-table
+    --compartment-id $compartment_id `
+    --region 'syd' `
+    --query 'data[].{CIDR:"cidr-block",networkName:"display-name",id:"id",state:"lifecycle-state"}' `
+    | convertFrom-json | format-table
 
 # subnet
 oci network subnet list `
-	--compartment-id $compartment_id `
-	--region 'syd' `
-	--query 'data[].{subnetName:"display-name",CIDR:"cidr-block",router:"virtual-router-ip",id:"id"}' `
-	| convertFrom-json | sort-object -property subnetName | format-table
+    --compartment-id $compartment_id `
+    --region 'syd' `
+    --query 'data[].{subnetName:"display-name",CIDR:"cidr-block",router:"virtual-router-ip",id:"id"}' `
+    | convertFrom-json | sort-object -property subnetName | format-table
 
 # route table
 oci network route-table list `
-	--region "syd" `
-	--compartment-id "$compartment_id" `
-	--query 'data[].{name:"display-name",id:id}' `
-	| convertFrom-json | sort-object -property name | format-table
+    --region "syd" `
+    --compartment-id "$compartment_id" `
+    --query 'data[].{name:"display-name",id:id}' `
+    | convertFrom-json | sort-object -property name | format-table
 
 ## NSG
 # List all NSG 
 oci network nsg list `
-	--compartment-id "$compartment_id" `
-	--region "syd" `
-	--query 'data[].{name:"display-name",id:id}' `
-	| convertFrom-json | sort-object -property name | format-table
+    --compartment-id "$compartment_id" `
+    --region "syd" `
+    --query 'data[].{name:"display-name",id:id}' `
+    | convertFrom-json | sort-object -property name | format-table
 
 # rule
 $nsgid = oci network nsg list --compartment-id "$compartment_id" --region "syd" --display-name "YD1PGDOM" --query 'data[].id' | jq -r '.[]'
@@ -50,17 +50,17 @@ oci dns view list `
 	
 ## peering 
 oci network remote-peering-connection list `
-	--compartment-id $compartment_id `
-	--region 'syd' `
-	--query 'data[*].{name:"display-name", status:"peering-status", peer:"peer-region-name"}' `
-	| convertFrom-json | sort-object -property name | format-table
+    --compartment-id $compartment_id `
+    --region 'syd' `
+    --query 'data[*].{name:"display-name", status:"peering-status", peer:"peer-region-name"}' `
+    | convertFrom-json | sort-object -property name | format-table
 
 ## VPN connections
 oci network ip-sec-connection list `
-	--compartment-id $compartment_id `
-	--region 'syd' `
-	--query 'data[*].{name:"display-name",state:"lifecycle-state"}' `
-	| convertFrom-json | sort-object -property name | format-table
+    --compartment-id $compartment_id `
+    --region 'syd' `
+    --query 'data[*].{name:"display-name",state:"lifecycle-state"}' `
+    | convertFrom-json | sort-object -property name | format-table
     
     
 ## IP
@@ -98,5 +98,5 @@ foreach ($i in $instance_ids){
         --region "$region" `
         --vnic-id  "$vnic_id" `
         --query 'data[].{ip:"ip-address", "is-primary":"is-primary",hostname:"hostname-label"}' `
-		| convertFrom-json | sort-object -property { [System.Version]($_.ip) } | format-table
+	| convertFrom-json | sort-object -property { [System.Version]($_.ip) } | format-table
 }
