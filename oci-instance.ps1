@@ -10,6 +10,14 @@ oci compute instance list --region "sin" --compartment-id "$compartment_id" --qu
 # restart instance by instance ID
 oci compute instance action --instance-id <instance_OCID> --action reset
 
+
+# all running instances from a region
+oci search resource structured-search `
+    --query-text "QUERY instance resources return region where lifeCycleState =~ 'running'" 	
+	--query 'data.items[*]."display-name"' `
+	--region 'cwl' `
+	| ConvertFrom-Json | sort
+
 # all instances from all regions sort by compartment ID 
 foreach ($i in get-content regions.txt) {
     $i
@@ -61,6 +69,8 @@ oci search resource structured-search `
 
 # count
 oci compute instance list --compartment-id $compartment_id --region='syd' --query 'length(data)' 
+oci search resource structured-search `
+    --query-text "QUERY instance resources return region where lifeCycleState =~ 'running'" --query 'length(data.items[*])' --region 'syd'
 
 # query by name
 oci search resource structured-search `
