@@ -47,7 +47,7 @@ oci search resource structured-search `
     
 # all in all compartments in a region
 oci search resource structured-search `
-    --region 'sin' `
+    --region 'iad' `
     --query-text "QUERY instance resources return region where lifeCycleState = 'running'" `
     --query 'data.items[].{name:"display-name",state:"lifecycle-state", region:"additional-details"."region", Environment:"defined-tags"."Hosting"."Environment",OS:"freeform-tags"."os",role:"freeform-tags"."role",ansible:"freeform-tags"."ansible_managed",terraform:"freeform-tags"."terraform_managed"}'  `
     | convertFrom-json | sort-object -property name | format-table
