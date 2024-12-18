@@ -14,9 +14,9 @@ oci compute instance action --instance-id <instance_OCID> --action reset
 # all running instances from a region
 oci search resource structured-search `
     --query-text "QUERY instance resources return region where lifeCycleState =~ 'running'" 	
-	--query 'data.items[*]."display-name"' `
-	--region 'cwl' `
-	| ConvertFrom-Json | sort
+    --query 'data.items[*]."display-name"' `
+    --region 'cwl' `
+    | ConvertFrom-Json | sort
 
 # all instances from all regions sort by compartment ID 
 foreach ($i in get-content regions.txt) {
