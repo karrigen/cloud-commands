@@ -13,9 +13,9 @@ oci compute instance action --instance-id <instance_OCID> --action reset
 
 # all running instances from a region
 oci search resource structured-search `
-    --query-text "QUERY instance resources return region where lifeCycleState =~ 'running'" 	
+    --query-text "QUERY instance resources return region where lifeCycleState =~ 'running'" `
     --query 'data.items[*]."display-name"' `
-    --region 'cwl' `
+    --region 'iad' `
     | ConvertFrom-Json | sort
 
 # all instances from all regions sort by compartment ID 
@@ -55,7 +55,7 @@ oci search resource structured-search `
 # all in one compartment in a region
 oci compute instance list `
     --compartment-id $compartment_id `
-    --region 'sin' `
+    --region 'iad' `
     --query 'data[*].{name:"display-name",state:"lifecycle-state",region:"additional-details"."region",Environment:"defined-tags"."Hosting"."Environment",OS:"freeform-tags"."os",role:"freeform-tags"."role",ansible:"freeform-tags"."ansible_managed",terraform:"freeform-tags"."terraform_managed"}' `
     | convertFrom-json | sort-object -property name | format-table    
     
