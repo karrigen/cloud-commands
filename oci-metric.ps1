@@ -32,14 +32,14 @@ $result = foreach ($i in get-content regions.txt) {
     foreach ($compartment_id in get-content compartment.txt) {
         $compartment_id
         oci monitoring metric-data summarize-metrics-data `
-	--region $i `
-        --compartment-id $compartment_id `
-	--namespace oci_computeagent `
-        --start-time 2024-05-30T00:00:00.000Z `
-	--end-time 2024-06-30T00:00:00.000Z `
-        --query-text "CpuUtilization[1d].mean() < 1" `
-	--query 'sort_by(data[].{compartment:"compartment-id",instance:dimensions.resourceDisplayName},&instance)' `
-        | jq  -r '.[].instance' 
+            --region $i `
+	    --compartment-id $compartment_id `
+            --namespace oci_computeagent `
+	    --start-time 2024-05-30T00:00:00.000Z `
+            --end-time 2024-06-30T00:00:00.000Z `
+	    --query-text "CpuUtilization[1d].mean() < 1" `
+            --query 'sort_by(data[].{compartment:"compartment-id",instance:dimensions.resourceDisplayName},&instance)' `
+	    | jq  -r '.[].instance' 
     }
     echo ""
     echo "--------------------------------"
@@ -55,14 +55,14 @@ $result = foreach ($i in $regions) {
     foreach ($compartment_id in $compartment) {
         $compartment_id
         oci monitoring metric-data summarize-metrics-data `
-	--region $i `
-        --compartment-id $compartment_id `
-	--namespace oci_computeagent `
-        --start-time 2024-05-30T00:00:00.000Z `
-	--end-time 2024-06-30T00:00:00.000Z `
-        --query-text "MemoryUtilization[1d].mean() < 10" `
-	--query 'sort_by(data[].{compartment:"compartment-id",instance:dimensions.resourceDisplayName},&instance)' `
-        | jq  -r '.[].instance' 
+	    --region $i `
+            --compartment-id $compartment_id `
+	    --namespace oci_computeagent `
+            --start-time 2024-05-30T00:00:00.000Z `
+	    --end-time 2024-06-30T00:00:00.000Z `
+            --query-text "MemoryUtilization[1d].mean() < 10" `
+	    --query 'sort_by(data[].{compartment:"compartment-id",instance:dimensions.resourceDisplayName},&instance)' `
+            | jq  -r '.[].instance' 
     }
     echo ""
     echo "--------------------------------"
