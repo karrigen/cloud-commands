@@ -80,7 +80,6 @@ oci search resource structured-search `
     | convertFrom-json | format-table
 
     
-
 # all managed by ansible in a region 
 oci search resource structured-search `
     --region 'syd' `
@@ -103,3 +102,21 @@ oci compute instance list  `
     --region "syd" `
     --query 'sort_by(data[].{name:"display-name", "memory(G)":"shape-config"."memory-in-gbs"}, &name)' `
     --output table
+	
+
+# live migration
+foreach ($region in ('syd', 'iad', 'lhr','jed','phx','yyz')){
+    $region
+    oci compute instance list `
+	    --region "$region" `
+		--compartment-id "$compartment_id" `
+		--query'data[].{name:"display-name",recoveryAction:"availability-config"."recovery-action",networkType:"launch-options"."network-type",status:"lifecycle-state",liveMigration:"availability-config"."is-live-migration-preferred"}' `
+		| convertFrom-json | sort-object -property name | format-table
+}
+
+# update for live migration
+oci compute instance launch --generate-param-json-input availability-config > sample.json
+oci compute instance update `
+    --region 'lhr' `
+	--instance-id <intance_id> `
+	--availability-config  file://sample.json --force
