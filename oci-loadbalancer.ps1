@@ -112,7 +112,7 @@ $bs=BS_Prod_Domino_oci09005
 oci lb backend-set update `
     --load-balancer-id $lb `
     --backend-set-name "$bs" `
-    --policy  ROUND_ROBIN \
+    --policy  ROUND_ROBIN `
     --backends file://./backends.json `
     --health-checker-protocol TCP `
     --ssl-certificate-name wild-integrumsystems.com-2025-bs `
